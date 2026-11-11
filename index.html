@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dupe Detective</title>
+  <meta name="description" content="Which expensive lip glosses have a cheaper alternative with a similar formula, and what switching would mean for gross profit.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Lip gloss analysis · Matas.dk · November 2026</p>
+      <h1>Dupe Detective</h1>
+      <p class="lead">Which expensive lip glosses have a cheaper alternative with a similar formula, and what would it mean for gross profit if customers switched?</p>
+      <div class="stats" id="stats" aria-live="polite"></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section aria-labelledby="top3-title">
+      <div class="section-head">
+        <h2 id="top3-title">Top 3 dupe leads</h2>
+        <p>A similar formula (similarity score of at least <span data-field="cutoff"></span>) <strong>and</strong> a real price difference.</p>
+      </div>
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <section aria-labelledby="try-title" class="panel">
+      <div class="section-head">
+        <h2 id="try-title">Try the margins yourself</h2>
+        <p>The analysis uses Matas's group gross margin (<span data-field="group-margin"></span>) for both products, but the real margin on each gloss is unknown. Move the sliders to see how much the answer depends on it.</p>
+      </div>
+      <div class="try">
+        <div class="controls">
+          <label class="field">
+            <span>Dupe lead</span>
+            <select id="lead-select"></select>
+          </label>
+          <label class="field">
+            <span>Margin on the expensive gloss <output id="m-exp-out"></output></span>
+            <input type="range" id="m-exp" min="20" max="70" step="1">
+          </label>
+          <label class="field">
+            <span>Margin on the cheaper gloss <output id="m-chp-out"></output></span>
+            <input type="range" id="m-chp" min="20" max="70" step="1">
+          </label>
+          <button type="button" class="reset" id="reset">Reset to group margin</button>
+        </div>
+        <div class="result" aria-live="polite">
+          <p class="result-label">Cheaper tubes Matas must sell to replace the gross profit of one expensive tube</p>
+          <p class="big" id="tubes"></p>
+          <div class="tube-row" id="tube-row" aria-hidden="true"></div>
+          <p class="small" id="tube-detail"></p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="all-title">
+      <div class="section-head">
+        <h2 id="all-title">All likely dupes</h2>
+        <p>Every pair from different brands with a similarity score of at least <span data-field="cutoff"></span>, out of <span data-field="pairs"></span> pairs compared.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Similarity</th><th>Expensive</th><th>Cheaper alternative</th><th class="num">Premium</th><th class="num">Cheap tubes needed</th></tr>
+          </thead>
+          <tbody id="all-rows"></tbody>
+        </table>
+      </div>
+      <p class="note">Two pairs with high similarity are not useful dupes: one costs the same, and in another the "cheaper" gloss is about three times dearer per ml.</p>
+    </section>
+
+    <section aria-labelledby="cant-title" class="warning">
+      <h2 id="cant-title">What this analysis cannot prove</h2>
+      <ul>
+        <li><strong>Similar ingredients do not make the same product.</strong> Ingredient lists show no amounts, so texture, shine and feel can differ. I bought Essence Extreme Shine as a TikTok dupe for Dior Addict Lip Maximizer, and it was less shiny and stickier.</li>
+        <li><strong>The shop's data has gaps.</strong> My scraper read <span data-field="scraper"></span> fields correctly, but Matas itself misses ingredients, sizes in ml and whole ingredient lists, and some lists may be out of date.</li>
+        <li><strong>The real margins are unknown.</strong> Only Matas's group margin is public, and the result depends on how different the two products' margins are.</li>
+        <li><strong>We don't know if customers will switch,</strong> or how many. The numbers show what one switch would cost.</li>
+        <li>No product is said to copy another.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="how-title">
+      <div class="section-head">
+        <h2 id="how-title">How it was made</h2>
+      </div>
+      <ol class="steps">
+        <li><span>1</span><div><h3>Collect</h3><p>Lip gloss pages from Matas.dk, within robots.txt, with an honest scraper waiting 3 seconds between requests. Checked against the brands' own websites.</p></div></li>
+        <li><span>2</span><div><h3>Clean</h3><p><span data-field="raw"></span> products → <span data-field="kept"></span> lip glosses, one shade per product. "May contain" ingredients and colours don't count.</p></div></li>
+        <li><span>3</span><div><h3>Match</h3><p>Similarity = share of ingredients two glosses have in common. Compared with my own judgements and ChatGPT's (we agreed on <span data-field="llm"></span> pairs).</p></div></li>
+        <li><span>4</span><div><h3>Margin</h3><p>Prices without 25% VAT × Matas's group gross margin from the 2024/25 annual report = gross profit per tube.</p></div></li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>By Andreea Pana · AI in Accounting and Business, SDU · Numbers generated on <span data-field="date"></span> by my analysis scripts and read from <code>results.json</code>.</p>
+      <p>Sources: product pages on matas.dk (8 and 11 November 2026); Matas Group annual report 2024/25. The page was built with help from Claude Code.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
