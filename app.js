@@ -280,7 +280,7 @@ function setupReveal() {
   els.forEach((e) => io.observe(e));
 }
 
-fetch("results.json")
+fetch("results.json", { cache: "no-cache" })
   .then((r) => r.json())
   .then((d) => {
     fill("cutoff", d.cut_off.toFixed(2));
