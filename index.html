@@ -29,7 +29,31 @@
       <div class="cards" id="cards"></div>
     </section>
 
-    <section aria-labelledby="try-title" class="panel">
+    <section aria-labelledby="save-title" class="panel reveal">
+      <div class="section-head">
+        <h2 id="save-title">The customer's view: what does switching save?</h2>
+        <p>A dupe saves the customer money, but costs Matas gross profit. Pick a dupe and how many tubes a customer buys in a year.</p>
+      </div>
+      <div class="save">
+        <div class="controls">
+          <label class="field">
+            <span>Dupe lead</span>
+            <select id="save-lead"></select>
+          </label>
+          <label class="field">
+            <span>Tubes bought per year <output id="save-n-out"></output></span>
+            <input type="range" id="save-n" min="1" max="12" step="1" value="4">
+          </label>
+        </div>
+        <div class="save-results" aria-live="polite">
+          <div class="save-box good"><span>The customer saves</span><b id="save-customer"></b><small>prices incl. VAT</small></div>
+          <div class="save-box mid"><span>If they switch at Matas, Matas's gross profit changes by</span><b id="save-switch"></b><small>group margin, prices without VAT</small></div>
+          <div class="save-box bad"><span>If they buy the dupe elsewhere, Matas loses</span><b id="save-lost"></b><small>the whole gross profit</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="try-title" class="panel reveal">
       <div class="section-head">
         <h2 id="try-title">Try the margins yourself</h2>
         <p>The analysis uses Matas's group gross margin (<span data-field="group-margin"></span>) for both products, but the real margin on each gloss is unknown. Move the sliders to see how much the answer depends on it.</p>
@@ -55,11 +79,50 @@
           <p class="big" id="tubes"></p>
           <div class="tube-row" id="tube-row" aria-hidden="true"></div>
           <p class="small" id="tube-detail"></p>
+          <p class="sparkle-msg" id="sparkle-msg" hidden>✨ Break-even: at these margins, switching does not cost Matas gross profit.</p>
         </div>
       </div>
     </section>
 
-    <section aria-labelledby="all-title">
+    <section aria-labelledby="rare-title" class="reveal">
+      <div class="section-head">
+        <h2 id="rare-title">How rare are dupes?</h2>
+        <p>Every one of the <span data-field="pairs"></span> pairs, by how many ingredients they share. Move the line to choose your own cut-off for "likely dupe". I chose <span data-field="cutoff"></span>.</p>
+      </div>
+      <div class="panel hist-panel">
+        <svg id="hist" viewBox="0 0 800 260" role="img" aria-label="Histogram of similarity scores"></svg>
+        <label class="field">
+          <span>Cut-off <output id="cut-out"></output></span>
+          <input type="range" id="cut" min="0.10" max="0.80" step="0.01">
+        </label>
+        <p class="hist-result" aria-live="polite"><b id="cut-count"></b> <span id="cut-text"></span></p>
+        <p class="small">Bar heights use a square-root scale, so the few high-scoring pairs stay visible.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="find-title" class="reveal">
+      <div class="section-head">
+        <h2 id="find-title">Find a dupe</h2>
+        <p>Pick any of the <span data-field="matchable"></span> lip glosses with an ingredient list and see its closest match from another brand.</p>
+      </div>
+      <div class="panel find">
+        <label class="field">
+          <span>Your lip gloss</span>
+          <select id="find-select"></select>
+        </label>
+        <div id="find-result" class="find-result" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="quiz-title" class="reveal">
+      <div class="section-head">
+        <h2 id="quiz-title">Can you beat ChatGPT?</h2>
+        <p>Before calculating any scores, I judged 15 pairs myself. ChatGPT judged the same pairs from the ingredient lists, without names or prices. Your turn: is it a dupe?</p>
+      </div>
+      <div class="panel quiz" id="quiz"></div>
+    </section>
+
+    <section aria-labelledby="all-title" class="reveal">
       <div class="section-head">
         <h2 id="all-title">All likely dupes</h2>
         <p>Every pair from different brands with a similarity score of at least <span data-field="cutoff"></span>, out of <span data-field="pairs"></span> pairs compared.</p>
